@@ -1,0 +1,727 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Calendar</title>
+    <link
+      rel="stylesheet"
+      href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css"
+    />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/fullcalendar/3.10.2/fullcalendar.min.css"
+    />
+    <style>
+      body {
+        background-color: #ffffff; /* White background */
+        padding-top: 20px;
+      }
+      #calendar {
+        max-width: 800px;
+        margin: 0 auto;
+        background-color: #f5f5f5; /* Light gray background for calendar */
+        border-radius: 10px;
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+      }
+      .fc-content {
+        overflow: hidden;
+        white-space: nowrap;
+        text-overflow: ellipsis;
+      }
+      .fc-event-title {
+        color: #dc3545; /* Crimson red text color for event titles */
+      }
+      .fc-event-title:hover {
+        transform: scale(1.1);
+        transition: transform 0.3s ease-in-out;
+      }
+      .fc-today-button {
+        padding-top: 10px;
+        background-color: #dc3545; /* Crimson red background color for today button */
+        border-color: #dc3545; /* Crimson red border color for today button */
+      }
+      .fc-today-button:hover {
+        background-color: #c82333; /* Darker shade of crimson red for hover effect */
+        border-color: #c82333; /* Darker shade of crimson red for hover effect */
+      }
+      .fc-toolbar.fc-header-toolbar {
+        background-color: #343a40; /* Dark gray background for calendar toolbar */
+        border-color: #343a40; /* Dark gray border color for calendar toolbar */
+        border-radius: 5px;
+      }
+      .fc-button-group {
+        margin-right: 10px;
+        margin-left: 10px;
+        padding-bottom: 10px;
+      }
+      .fc-left,
+      .fc-center,
+      .fc-right {
+        color: #ffffff; /* White text color for calendar toolbar buttons */
+        padding-top: 10px;
+      }
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+          }
+          
+          /* Common styles */
+          :root {
+            --bg-color: #bbb;
+            --text-color: #0e0e0e;
+            --bg2: #aaa;
+          }
+          
+          .dark-mode {
+            --bg-color: #0e0e0e;
+            --text-color: #bbb;
+            --bg2: #222;
+          }
+          
+          body {
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            font-family: "Inter", sans-serif;
+            /* background: url('/public/assets/hero.jpg') ;
+              background-size: cover;
+              background-repeat: no-repeat; */
+          }
+          
+          .mode-toggle {
+            position: relative;
+            box-shadow: #0e0e0e;
+          }
+          
+          .mode-toggle input[type="checkbox"] {
+            display: none;
+          }
+          
+          .mode-toggle label {
+            display: inline-block;
+            width: 40px;
+            height: 20px;
+            background-color: #555;
+            border-radius: 10px;
+            cursor: pointer;
+          }
+          
+          .mode-toggle label:before {
+            content: "";
+            display: block;
+            width: 20px;
+            height: 20px;
+            background-color: #fff;
+            border-radius: 50%;
+            transition: transform 0.3s ease;
+          }
+          
+          .mode-toggle input:checked + label {
+            background-color: #2196f3;
+          }
+          
+          .mode-toggle input:checked + label:before {
+            transform: translateX(20px);
+          }
+          
+          /* body {
+              background-color: #171717;
+              margin: 0;
+              display: flex;
+              flex-direction: column;
+            }
+             */
+          ::-webkit-scrollbar {
+            width: 8px;
+          }
+          
+          ::-webkit-scrollbar-track {
+            -webkit-box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.3);
+            border-radius: 10px;
+          }
+          
+          ::-webkit-scrollbar-thumb {
+            border-radius: 10px;
+            background: rgba(131, 127, 127, 0.8);
+          }
+          
+          ::-webkit-scrollbar-thumb:window-inactive {
+            background: rgba(233, 233, 233, 0.4);
+          }
+          
+          .preloader {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.7);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 9999;
+          }
+          
+          .spinner {
+            border: 4px solid rgba(255, 255, 255, 0.3);
+            border-radius: 50%;
+            border-top: 4px solid #3498db;
+            width: 50px;
+            height: 50px;
+            animation: spin 2s linear infinite;
+          }
+          
+          @keyframes spin {
+            0% {
+              transform: rotate(0deg);
+            }
+          
+            100% {
+              transform: rotate(360deg);
+            }
+          }
+          
+          nav {
+            background-color: var(--bg-color);
+            display: flex;
+            flex-direction: row;
+            justify-content: space-evenly;
+            height: 80px;
+            align-items: center;
+            font-size: 16px;
+            position: fixed;
+            top: 0;
+            width: 100%;
+            z-index: 999;
+            gap: 250px;
+            opacity: 0.95;
+            backdrop-filter: blur(10px);
+          }
+          
+          .logo {
+            display: flex;
+            flex-direction: row;
+            align-items: center;
+            align-content: center;
+            gap: 6px;
+            font-size: 20px;
+          }
+          
+          .nav-links {
+            display: flex;
+            flex-direction: row;
+            gap: 40px;
+            align-items: center;
+            margin-right: 20px;
+          }
+          
+          .nav-links a {
+            color: var(--text-color);
+            text-decoration: none;
+          }
+          
+          .nav-links a:hover {
+            color: #a51c30;
+          }
+          .dropdown {
+            float: left;
+            overflow: hidden;
+          }
+          
+          .dropdown .dropbtn {
+            font-size: 17px;
+            border: none;
+            outline: none;
+            color: var(--text-color);
+            padding: 14px 16px;
+            background-color: inherit;
+            font-family: inherit;
+            margin: 0;
+          }
+          
+          .dropdown-content {
+            display: none;
+            position: absolute;
+            background-color: var(--bg2);
+            min-width: 160px;
+            box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+            z-index: 1;
+          }
+          
+          .dropdown-content a {
+            float: none;
+            color: var(--text-color);
+            padding: 12px 16px;
+            text-decoration: none;
+            display: block;
+            text-align: left;
+          }
+          
+           .dropdown:hover .dropbtn {
+            text-align: center;
+            color: #a51c30;
+          }
+          
+          
+          .dropdown-content a:hover {
+            background-color: #ddd;
+            color: #a51c30;
+          }
+          
+          
+          .dropdown:hover .dropdown-content {
+            display: block;
+          }
+          
+          
+          @media screen and (max-width: 600px) {
+           
+           
+           .dropdown {float: none;}
+           .dropdown-content {position: relative;}
+            .dropdown .dropbtn {
+              display: block;
+              width: 100%;
+              text-align: left;
+            }
+          }
+          .login {
+            background-color: #484848;
+            border-radius: 5px;
+            color: #ffffff;
+            padding: 9px 20px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+          }
+          
+          .login:hover {
+            background-color: #2980b9;
+          }
+          
+          .hamburger-menu {
+            display: none;
+          }
+          
+          @media screen and (max-width: 1024px) {
+            .nav-links {
+              align-self: center;
+              align-content: center;
+              display: none;
+              flex-direction: column;
+              position: absolute;
+              top: 80px;
+              margin: 0;
+              width: 100%;
+              background-color: var(--bg-color);
+              z-index: 1;
+              padding: 30px;
+              gap: 10px;
+            }
+          
+            .nav-links.active {
+              display: flex;
+            }
+          
+            .nav-links a {
+              padding: 10px;
+              text-align: center;
+            }
+          
+            .hamburger-menu {
+              display: block;
+              position: absolute;
+              top: 50%;
+              right: 20px;
+              transform: translateY(-50%);
+              cursor: pointer;
+            }
+          
+            .bar {
+              width: 25px;
+              height: 3px;
+              background-color: var(--text-color);
+              margin: 4px 0;
+            }
+          }
+          
+          /* Hero content */
+          #hero {
+            position: relative;
+            height: 100vh;
+            background: url("https://github.com/Karthikeyan1508/UVCE-Website/blob/main/public/assets/hero.jpg?raw=true") center/cover no-repeat;
+          }
+          
+          #hero::before {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(rgba(0, 0, 0, 0.85), rgba(0, 0, 0, 0.5));
+          }
+          
+          .hero-content {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            text-align: center;
+            color: #eee;
+            z-index: 1;
+          }
+          
+          .hero-content h1 {
+            font-size: 3rem;
+            margin-bottom: 20px;
+          }
+          
+          .hero-content p {
+            font-size: 1.2rem;
+            margin-bottom: 30px;
+          }
+          
+          .btn {
+            display: inline-block;
+            background-color: #3498db;
+            color: #fff;
+            padding: 10px 20px;
+            border-radius: 5px;
+            text-decoration: none;
+            transition: background-color 0.3s ease;
+          }
+          
+          .btn:hover {
+            background-color: #2980b9;
+          }
+          
+          @media screen and (max-width: 768px) {
+            .hero-content h1 {
+              font-size: 2.5rem;
+            }
+          
+            .hero-content p {
+              font-size: 1rem;
+            }
+          
+            .btn {
+              font-size: 0.9rem;
+            }
+          }
+          
+          /* announcemnets */
+          
+          #announcement {
+            background-color: var(--bg-color);
+            /* padding: 20px; */
+            display: flex;
+            align-items: center;
+          }
+          
+          .announcement-content {
+            /* flex: 1; */
+            font-size: 18px;
+            padding: 15px 25px;
+            /* width: auto; */
+            background-color: #a51c30;
+            color: #eee;
+          }
+          
+          .announcement-content p {
+            font-weight: 500;
+          }
+          
+          .marquee-container {
+            /* padding: 15px 25px; */
+            margin: auto;
+            padding: auto;
+            overflow: hidden;
+            align-items: center;
+            flex: 2;
+          }
+          
+          marquee {
+            font-size: 16px;
+            line-height: 1.5;
+          }
+          
+          @media screen and (max-width: 768px) {
+            .announcement-content {
+              flex: 100%;
+              display: none;
+            }
+          
+            .marquee-container {
+              flex: 100%;
+              margin-top: 10px;
+            }
+          }
+          
+          #about-us {
+              padding: 80px 0;
+              display: flex;
+              background-color: var(--bg2);
+              justify-content: center;
+              flex-direction: row; 
+            }
+            
+            .about-us-content {
+              display: flex;
+              width: 80%; 
+              justify-content: space-evenly;
+              align-items: center;
+              flex-wrap: wrap;
+              margin: 20px;
+            }
+            
+            .about-us-text {
+              text-align: center;
+              padding: 20px;
+              width: calc(80% - 20px); 
+              max-width: 600px; 
+            }
+            
+            .about-us-text h2 {
+              font-size: 36px;
+              margin-bottom: 20px;
+              color: var(--text-color);
+            }
+            
+            .about-us-text p {
+              font-size: 18px;
+              line-height: 1.6;
+              color: #555;
+            }
+            
+            .about-us-image {
+              width: calc(50% - 20px); 
+              max-width: 400px;
+              padding: 20px;
+              background-image: url("https://placehold.co/600x400");
+              background-size: cover;
+              background-repeat: no-repeat;
+              background-position: center;
+              height: 300px;
+              border-radius: 10px;
+              margin-top: 20px;
+            }
+            
+            @media screen and (max-width: 768px) {
+              #about-us {
+                flex-direction: column; 
+                align-items: center; 
+                justify-content: center; 
+              }
+            
+              .about-us-content {
+                width: 80%; 
+              }
+            
+              .about-us-text,
+              .about-us-image {
+                width: 100%; 
+                max-width: none; 
+                text-align: center; 
+              }
+            
+              .about-us-image {
+                height: 200px; 
+              }
+            }
+            
+          
+          #legacy {
+            text-align: center;
+            margin: 50px 0;
+            display: flex;
+            flex-direction: column;
+          }
+          
+          .heading {
+            font-size: 36px;
+            font-weight: bold;
+            margin-bottom: 20px;
+            color: var(--text-color);
+          }
+          
+          .legacyContainer {
+            display: flex;
+            justify-content: space-evenly;
+          }
+          
+          .leg-content {
+            width: 30%;
+            /* background-color: #f0f0f0; */
+            padding: 20px;
+            /* border-right: solid 1px; */
+            /* opacity: 0.15; */
+            /* border-radius: 8px; */
+            /* box-shadow: 0 0 10px rgba(0, 0, 0, 0.1); */
+            transition: transform 0.3s ease;
+          }
+          
+          .text {
+            font-size: 24px;
+            font-weight: bold;
+            color: #666;
+            margin-bottom: 10px;
+          }
+          
+          .num {
+            font-size: 32px;
+            color: #a51c30;
+          }
+          
+          .leg-content:nth-last-child(1) {
+            border-right: 0;
+          }
+          
+          @media screen and (max-width: 768px) {
+            .legacyContainer {
+              flex-wrap: wrap;
+              flex-direction: column;
+              justify-items: center;
+              align-items: center;
+            }
+          }
+    </style>
+  </head>
+  <body>
+    <div class="preloader">
+      <div class="spinner"></div>
+    </div>
+    <script>
+      document.addEventListener("DOMContentLoaded", () => {
+        const preloader = document.querySelector(".preloader");
+
+        preloader.style.display = "flex";
+        setTimeout(() => {
+          preloader.style.display = "none";
+        }, 500);
+      });
+    </script>
+    
+    <script>
+      document.addEventListener("DOMContentLoaded", () => {
+          const modeToggle = document.getElementById('mode-toggle');
+          const body = document.body;
+        
+          const setMode = () => {
+            const mode = localStorage.getItem('mode');
+            if (mode === 'dark') {
+              body.classList.add('dark-mode');
+              modeToggle.checked = true;
+            } else {
+              body.classList.remove('dark-mode');
+              modeToggle.checked = false;
+            }
+          };
+      
+          setMode();
+        
+          modeToggle.addEventListener('change', () => {
+            if (modeToggle.checked) {
+              body.classList.add('dark-mode');
+              localStorage.setItem('mode', 'dark'); 
+            } else {
+              body.classList.remove('dark-mode');
+              localStorage.setItem('mode', 'dark'); 
+            }
+          });
+        });
+      </script>
+    <nav>
+
+      <div class="logo">
+        <!-- <div class="image">
+                       <strong>cc</strong>
+                    </div> -->
+        <div class="text" id="#tile">
+          <strong>UVCE</strong>
+        </div>
+      </div>
+      <div class="nav-links">
+        <a href="/">Home</a>
+        <a href="#products">About</a>
+        <a href="#products">Academics</a>
+        <a href="{% url 'gallery' %}">Gallery</a>
+        <div class="dropdown">
+          <button class="dropbtn">Departments
+            <i class="fa fa-caret-down"></i>
+          </button>
+          <div class="dropdown-content">
+            <a href="#">CSE</a>
+            <a href="#">ISE</a>
+            <a href="#">AIML</a>
+            <a href="#">ECE</a>
+            <a href="#">EEE</a>
+            <a href="#">MECH</a>
+            <a href="#">Civil</a>
+          </div>
+        </div>
+        <a href="{% url 'calendar_view' %}">COE</a>
+        <div class="mode-toggle">
+            <input type="checkbox" id="mode-toggle">
+            <label for="mode-toggle"></label>
+          </div>
+        </div>
+       
+      </div>
+      <!-- <a href="login.html">
+                <div class="login"><strong>LOGIN</strong></div>
+            </a> -->
+      <div class="hamburger-menu">
+        <div class="bar"></div>
+        <div class="bar"></div>
+        <div class="bar"></div>
+      </div>
+      <script>
+        const hamburgerMenu = document.querySelector(".hamburger-menu");
+        const navLinks = document.querySelector(".nav-links");
+
+        hamburgerMenu.addEventListener("click", () => {
+          navLinks.classList.toggle("active");
+        });
+      </script>
+    </nav>
+    <div class="container">
+      <br />
+      <br />
+      <br />
+      <h1 class="text-center text-dark mb-4">Calendar</h1>
+      <div id="calendar"></div>
+    </div>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.29.1/moment.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/fullcalendar/3.10.2/fullcalendar.min.js"></script>
+    <script>
+      $(document).ready(function() {
+          $('#calendar').fullCalendar({
+              header: {
+                  left: 'prev,next today',
+                  center: 'title',
+                  right: 'month,agendaWeek,agendaDay'
+              },
+              editable: false,
+              events: [
+                  {% for event in events %}
+                      {
+                          title: '{{ event.title }}',
+                          start: '{{ event.date|date:"Y-m-d" }}'
+                      },
+                  {% endfor %}
+              ],
+              eventRender: function(event, element) {
+                  element.find('.fc-title').attr('title', event.title);
+              }
+          });
+
+          $('.fc-today-button').click(function() {
+              $('#calendar').fullCalendar('today');
+          });
+      });
+    </script>
+    <br />
+  </body>
+</html>

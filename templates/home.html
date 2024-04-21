@@ -1,0 +1,1412 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="style.css">
+    <script src="script.js"></script>
+    <title>UVCE</title>
+    <style>
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+      
+      /* Common styles */
+      :root {
+        --bg-color: #dadada;
+        --text-color: #0e0e0e;
+        --bg2: #e3e3e3;
+      }
+      
+      .dark-mode {
+        --bg-color: #0e0e0e;
+        --text-color: #bbb;
+        --bg2: #222;
+      }
+      
+      body {
+        background-color: var(--bg-color);
+        color: var(--text-color);
+        font-family: "Inter", sans-serif;
+        /* background: url('/public/assets/hero.jpg') ;
+          background-size: cover;
+          background-repeat: no-repeat; */
+      }
+      
+      .mode-toggle {
+        position: relative;
+        box-shadow: #0e0e0e;
+      }
+      
+      .mode-toggle input[type="checkbox"] {
+        display: none;
+      }
+      
+      .mode-toggle label {
+        display: inline-block;
+        width: 40px;
+        height: 20px;
+        background-color: #555;
+        border-radius: 10px;
+        cursor: pointer;
+      }
+      
+      .mode-toggle label:before {
+        content: "";
+        display: block;
+        width: 20px;
+        height: 20px;
+        background-color: #fff;
+        border-radius: 50%;
+        transition: transform 0.3s ease;
+      }
+      
+      .mode-toggle input:checked + label {
+        background-color: #2196f3;
+      }
+      
+      .mode-toggle input:checked + label:before {
+        transform: translateX(20px);
+      }
+      
+      /* body {
+          background-color: #171717;
+          margin: 0;
+          display: flex;
+          flex-direction: column;
+        }
+         */
+      ::-webkit-scrollbar {
+        width: 8px;
+      }
+      
+      ::-webkit-scrollbar-track {
+        -webkit-box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.3);
+        border-radius: 10px;
+      }
+      
+      ::-webkit-scrollbar-thumb {
+        border-radius: 10px;
+        background: rgba(131, 127, 127, 0.8);
+      }
+      
+      ::-webkit-scrollbar-thumb:window-inactive {
+        background: rgba(233, 233, 233, 0.4);
+      }
+      
+      .preloader {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background-color: rgba(0, 0, 0, 0.7);
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        z-index: 9999;
+      }
+      
+      .spinner {
+        border: 4px solid rgba(255, 255, 255, 0.3);
+        border-radius: 50%;
+        border-top: 4px solid #3498db;
+        width: 50px;
+        height: 50px;
+        animation: spin 2s linear infinite;
+      }
+      
+      @keyframes spin {
+        0% {
+          transform: rotate(0deg);
+        }
+      
+        100% {
+          transform: rotate(360deg);
+        }
+      }
+      
+      nav {
+        background-color: var(--bg-color);
+        display: flex;
+        flex-direction: row;
+        justify-content: space-evenly;
+        height: 80px;
+        align-items: center;
+        font-size: 16px;
+        position: fixed;
+        top: 0;
+        width: 100%;
+        z-index: 999;
+        gap: 250px;
+        opacity: 0.95;
+        backdrop-filter: blur(10px);
+      }
+      
+      .logo {
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+        align-content: center;
+        gap: 6px;
+        font-size: 20px;
+      }
+      
+      .nav-links {
+        display: flex;
+        flex-direction: row;
+        gap: 40px;
+        align-items: center;
+        margin-right: 20px;
+      }
+      
+      .nav-links a {
+        color: var(--text-color);
+        text-decoration: none;
+      }
+      
+      .nav-links a:hover {
+        color: #a51c30;
+      }
+      .dropdown {
+        float: left;
+        overflow: hidden;
+      }
+      
+      .dropdown .dropbtn {
+        font-size: 17px;
+        border: none;
+        outline: none;
+        color: var(--text-color);
+        padding: 14px 16px;
+        background-color: inherit;
+        font-family: inherit;
+        margin: 0;
+      }
+      
+      .dropdown-content {
+        display: none;
+        position: absolute;
+        background-color: var(--bg2);
+        min-width: 160px;
+        box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+        z-index: 1;
+      }
+      
+      .dropdown-content a {
+        float: none;
+        color: var(--text-color);
+        padding: 12px 16px;
+        text-decoration: none;
+        display: block;
+        text-align: left;
+      }
+      
+       .dropdown:hover .dropbtn {
+        text-align: center;
+        color: #a51c30;
+      }
+      
+      
+      .dropdown-content a:hover {
+        background-color: #ddd;
+        color: #a51c30;
+      }
+      
+      
+      .dropdown:hover .dropdown-content {
+        display: block;
+      }
+      
+      
+      @media screen and (max-width: 600px) {
+       
+       
+       .dropdown {float: none;}
+       .dropdown-content {position: relative;}
+        .dropdown .dropbtn {
+          display: block;
+          width: 100%;
+          text-align: left;
+        }
+      }
+      .login {
+        background-color: #484848;
+        border-radius: 5px;
+        color: #ffffff;
+        padding: 9px 20px;
+        cursor: pointer;
+        transition: background-color 0.3s ease;
+      }
+      
+      .login:hover {
+        background-color: #2980b9;
+      }
+      
+      .hamburger-menu {
+        display: none;
+      }
+      
+      @media screen and (max-width: 1024px) {
+        .nav-links {
+          align-self: center;
+          align-content: center;
+          display: none;
+          flex-direction: column;
+          position: absolute;
+          top: 80px;
+          margin: 0;
+          width: 100%;
+          background-color: var(--bg-color);
+          z-index: 1;
+          padding: 30px;
+          gap: 10px;
+        }
+      
+        .nav-links.active {
+          display: flex;
+        }
+      
+        .nav-links a {
+          padding: 10px;
+          text-align: center;
+        }
+      
+        .hamburger-menu {
+          display: block;
+          position: absolute;
+          top: 50%;
+          right: 20px;
+          transform: translateY(-50%);
+          cursor: pointer;
+        }
+      
+        .bar {
+          width: 25px;
+          height: 3px;
+          background-color: var(--text-color);
+          margin: 4px 0;
+        }
+      }
+      
+      /* Hero content */
+      #hero {
+        position: relative;
+        height: 100vh;
+        background: url("https://github.com/CharanTejaBS6/Marvel-Images/blob/main/IMG_20220512_101353.jpg?raw=true") center/cover no-repeat;
+      }
+      
+      #hero::before {
+        content: "";
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: linear-gradient(rgba(0, 0, 0, 0.85), rgba(0, 0, 0, 0.5));
+      }
+      
+      .hero-content {
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        text-align: center;
+        color: #eee;
+        z-index: 1;
+      }
+      
+      .hero-content h1 {
+        font-size: 3rem;
+        margin-bottom: 20px;
+      }
+      
+      .hero-content p {
+        font-size: 1.2rem;
+        margin-bottom: 30px;
+      }
+      
+      .btn {
+        display: inline-block;
+        background-color: #3498db;
+        color: #fff;
+        padding: 10px 20px;
+        border-radius: 5px;
+        text-decoration: none;
+        transition: background-color 0.3s ease;
+      }
+      
+      .btn:hover {
+        background-color: #2980b9;
+      }
+      
+      @media screen and (max-width: 768px) {
+        .hero-content h1 {
+          font-size: 2.5rem;
+        }
+      
+        .hero-content p {
+          font-size: 1rem;
+        }
+      
+        .btn {
+          font-size: 0.9rem;
+        }
+      }
+      
+      /* announcemnets */
+      
+      #announcement {
+        background-color: var(--bg-color);
+        /* padding: 20px; */
+        display: flex;
+        align-items: center;
+      }
+      
+      .announcement-content {
+        /* flex: 1; */
+        font-size: 18px;
+        padding: 15px 25px;
+        /* width: auto; */
+        background-color: #a51c30;
+        color: #eee;
+      }
+      
+      .announcement-content p {
+        font-weight: 500;
+      }
+      
+      .marquee-container {
+        /* padding: 15px 25px; */
+        margin: auto;
+        padding: auto;
+        overflow: hidden;
+        align-items: center;
+        flex: 2;
+      }
+      
+      marquee {
+        font-size: 16px;
+        line-height: 1.5;
+      }
+      
+      @media screen and (max-width: 768px) {
+        .announcement-content {
+          flex: 100%;
+          display: none;
+        }
+      
+        .marquee-container {
+          flex: 100%;
+          margin-top: 10px;
+        }
+      }
+      
+      #about-us {
+          padding: 80px 0;
+          display: flex;
+          background-color: var(--bg2);
+          justify-content: center;
+          flex-direction: row; 
+        }
+        
+        .about-us-content {
+          display: flex;
+          width: 80%; 
+          justify-content: space-evenly;
+          align-items: center;
+          flex-wrap: wrap;
+          margin: 20px;
+        }
+        
+        .about-us-text {
+          text-align: center;
+          padding: 20px;
+          width: calc(80% - 20px); 
+          max-width: 600px; 
+        }
+        
+        .about-us-text h2 {
+          font-size: 36px;
+          margin-bottom: 20px;
+          color: var(--text-color);
+        }
+        
+        .about-us-text p {
+          font-size: 18px;
+          line-height: 1.6;
+          color: #555;
+        }
+        
+        .about-us-image {
+          width: calc(50% - 20px); 
+          max-width: 400px;
+          padding: 20px;
+          background-image: url("https://placehold.co/600x400");
+          background-size: cover;
+          background-repeat: no-repeat;
+          background-position: center;
+          height: 300px;
+          border-radius: 10px;
+          margin-top: 20px;
+        }
+        
+        @media screen and (max-width: 768px) {
+          #about-us {
+            flex-direction: column; 
+            align-items: center; 
+            justify-content: center; 
+          }
+        
+          .about-us-content {
+            width: 80%; 
+          }
+        
+          .about-us-text,
+          .about-us-image {
+            width: 100%; 
+            max-width: none; 
+            text-align: center; 
+          }
+        
+          .about-us-image {
+            height: 200px; 
+          }
+        }
+        
+      
+      #legacy {
+        text-align: center;
+        margin: 50px 0;
+        margin-top: 100px;
+        margin-bottom: 100px;
+        display: flex;
+        flex-direction: column;
+      }
+      
+      .heading {
+        font-size: 36px;
+        font-weight: bold;
+        margin-bottom: 20px;
+        color: var(--text-color);
+      }
+      
+      .legacyContainer {
+        display: flex;
+        justify-content: space-evenly;
+      }
+      
+      .leg-content {
+        width: 30%;
+        /* background-color: #f0f0f0; */
+        padding: 20px;
+        /* border-right: solid 1px; */
+        /* opacity: 0.15; */
+        /* border-radius: 8px; */
+        /* box-shadow: 0 0 10px rgba(0, 0, 0, 0.1); */
+        transition: transform 0.3s ease;
+      }
+      
+      .text {
+        font-size: 24px;
+        font-weight: bold;
+        color: #666;
+        margin-bottom: 10px;
+      }
+      
+      .num {
+        font-size: 32px;
+        color: #a51c30;
+      }
+      
+      .leg-content:nth-last-child(1) {
+        border-right: 0;
+      }
+      
+      @media screen and (max-width: 768px) {
+        .legacyContainer {
+          flex-wrap: wrap;
+          flex-direction: column;
+          justify-items: center;
+          align-items: center;
+        }
+      }
+      
+      
+      
+      .map-section {
+       
+        padding: 20px;
+        text-align: center;
+        background: var(--bg2);
+      }
+      .map-section h2{
+        margin-bottom: 50px;
+        margin-top: 100px;
+        font-size: 36px;
+        font-weight: bold;
+        color: var(--text-color);
+      }
+      .map-container {
+        display: inline-block;
+        width: 45%;
+        padding: 20px;
+        box-sizing: border-box;
+        border-radius: 10px;
+        margin-bottom: 100px;
+      }
+      
+      .map-heading {
+        font-size: 24px;
+        margin-bottom: 20px;
+        color: var(--text-color);
+        font-weight: 7px;
+      }
+      
+      iframe {
+        width: 100%;
+        height: 300px;
+        border: none;
+        border-radius: 8px;
+        box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
+      }
+      
+      
+      .contact_us_green * {
+      }
+      
+      .contact_us_green .responsive-container-block {
+        min-height: 75px;
+        height: fit-content;
+        width: 100%;
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: flex-start;
+        margin-top: 0px;
+        margin-right: auto;
+        margin-bottom: 60px;
+        margin-left: auto;
+      }
+      
+      .contact_us_green input:focus {
+        outline-color: initial;
+        outline-style: none;
+        outline-width: initial;
+      }
+      
+      .contact_us_green textarea:focus {
+        outline-color: initial;
+        outline-style: none;
+        outline-width: initial;
+      }
+      
+      .contact_us_green .text-blk {
+        margin-top: 0px;
+        margin-right: 0px;
+        margin-bottom: 0px;
+        margin-left: 0px;
+        line-height: 25px;
+      }
+      
+      .contact_us_green .responsive-cell-block {
+        min-height: 75px;
+      }
+      
+      .contact_us_green .responsive-container-block.container {
+        max-width: 1320px;
+        margin-top: 60px;
+        margin-right: auto;
+        margin-bottom: 60px;
+        margin-left: auto;
+      }
+      
+      .contact_us_green .responsive-container-block.big-container {
+        padding-top: 0px;
+        padding-right: 50px;
+        padding-bottom: 0px;
+        padding-left: 50px;
+      }
+      
+      .contact_us_green .text-blk.contactus-head {
+        font-size: 40px;
+        line-height: 50px;
+        font-weight: 700;
+        margin-top: 0px;
+        margin-right: 0px;
+        margin-bottom: 10px;
+        margin-left: 0px;
+      }
+      
+      .contact_us_green .text-blk.contactus-subhead {
+        max-width: 385px;
+        color: --bg2;
+        font-size: 18px;
+        margin-top: 0px;
+        margin-right: 0px;
+        margin-bottom: 50px;
+        margin-left: 0px;
+      }
+      
+      .contact_us_green .contact-svg {
+        padding-top: 0px;
+        padding-right: 25px;
+        padding-bottom: 0px;
+        padding-left: 0px;
+        width: 65px;
+        height: 40px;
+      }
+      
+      .contact_us_green .social-media-links {
+        margin-top: 80px;
+        margin-right: auto;
+        margin-bottom: 0px;
+        margin-left: auto;
+        width: 250px;
+        display: flex;
+        justify-content: space-evenly;
+      }
+      
+      .contact_us_green .social-svg {
+        width: 35px;
+        height: 35px;
+      }
+      
+      .contact_us_green .text-box {
+        display: flex;
+        margin-top: 0px;
+        margin-right: 0px;
+        margin-bottom: 50px;
+        margin-left: 0px;
+      }
+      
+      .contact_us_green .contact-text {
+        color: #939393;
+      }
+      
+      .contact_us_green .input {
+        height: 50px;
+        width: 90%;
+        border-top-width: 2.5px;
+        border-right-width: 2.5px;
+        border-bottom-width: 2.5px;
+        border-left-width: 2.5px;
+        border-top-style: solid;
+        border-right-style: solid;
+        border-bottom-style: solid;
+        border-left-style: solid;
+        border-top-color: #a2a2a2;
+        border-right-color: #a2a2a2;
+        border-bottom-color: #a2a2a2;
+        border-left-color: #a2a2a2;
+        border-image-source: initial;
+        border-image-slice: initial;
+        border-image-width: initial;
+        border-image-outset: initial;
+        border-image-repeat: initial;
+        border-top-left-radius: 5px;
+        border-top-right-radius: 5px;
+        border-bottom-right-radius: 5px;
+        border-bottom-left-radius: 5px;
+        font-size: 16px;
+        padding-top: 5px;
+        padding-right: 15px;
+        padding-bottom: 5px;
+        padding-left: 15px;
+      }
+      
+      .contact_us_green .textinput {
+        height: 200px;
+        width: 95%;
+      
+      
+        border-image-source: initial;
+        border-image-slice: initial;
+        border-image-width: initial;
+        border-image-outset: initial;
+        border-image-repeat: initial;
+        border-top-left-radius: 5px;
+        border-top-right-radius: 5px;
+        border-bottom-right-radius: 5px;
+        border-bottom-left-radius: 5px;
+        font-size: 16px;
+        padding-top: 20px;
+        padding-right: 30px;
+        padding-bottom: 20px;
+        padding-left: 20px;
+      }
+      
+      .contact_us_green .submit-btn {
+        min-width: 290px;
+        height: 60px;
+        background-color: #a51c30;
+        font-size: 18px;
+        font-weight: 700;
+        color: white;
+        border-top-width: 2px;
+        border-right-width: 2px;
+        border-bottom-width: 2px;
+        border-left-width: 2px;
+        border-top-style: none;
+        border-right-style: none;
+        border-bottom-style: none;
+        border-left-style: none;
+      
+        border-image-source: initial;
+        border-image-slice: initial;
+        border-image-width: initial;
+        border-image-outset: initial;
+        border-image-repeat: initial;
+        border-top-left-radius: 5px;
+        border-top-right-radius: 5px;
+        border-bottom-right-radius: 5px;
+        border-bottom-left-radius: 5px;
+        margin-top: 0px;
+        margin-right: auto;
+        margin-bottom: 0px;
+        margin-left: auto;
+        cursor: pointer;
+      }
+      
+      .contact_us_green .btn-wrapper {
+        display: flex;
+        justify-content: center;
+      }
+      
+      .contact_us_green .text-blk.input-title {
+        font-size: 18px;
+        font-weight: 600;
+        line-height: 28px;
+        margin-top: 0px;
+        margin-right: 0px;
+        margin-bottom: 15px;
+        margin-left: 0px;
+      }
+      
+      .contact_us_green .responsive-cell-block.wk-ipadp-6.wk-tab-12.wk-mobile-12.wk-desk-6 {
+        margin-top: 0px;
+        margin-right: 0px;
+        margin-bottom: 30px;
+        margin-left: 0px;
+      }
+      
+      .contact_us_green .responsive-cell-block.wk-tab-12.wk-mobile-12.wk-desk-5.wk-ipadp-10 {
+        padding-top: 0px;
+        padding-right: 0px;
+        padding-bottom: 0px;
+        padding-left: 60px;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+      }
+      
+      .contact_us_green .head-text-box {
+        display: none;
+      }
+      
+      .contact_us_green .line {
+        border-right-width: 1.8px;
+        border-right-style: solid;
+        border-right-color: #a2a2a2;
+      }
+      
+      .contact_us_green .responsive-cell-block.wk-tab-12.wk-mobile-12.wk-desk-7.wk-ipadp-10.line {
+        padding-top: 0px;
+        padding-right: 20px;
+        padding-bottom: 0px;
+        padding-left: 0px;
+      }
+      
+      @media (max-width: 1024px) {
+        .contact_us_green .responsive-container-block.container {
+          justify-content: center;
+        }
+      
+        .contact_us_green .text-blk.contactus-subhead {
+          max-width: 90%;
+        }
+      
+        .contact_us_green .head-text-box {
+          display: block;
+        }
+      
+        .contact_us_green .responsive-cell-block.wk-tab-12.wk-mobile-12.wk-desk-7.wk-ipadp-10.line {
+          padding-top: 0px;
+          padding-right: 20px;
+          padding-bottom: 60px;
+          padding-left: 0px;
+        }
+      
+        .contact_us_green .line {
+          border-right-width: initial;
+          border-right-style: none;
+          border-right-color: initial;
+          border-bottom-width: 1.8px;
+          border-bottom-style: solid;
+          border-bottom-color: #a2a2a2;
+        }
+      
+        .contact_us_green .responsive-cell-block.wk-tab-12.wk-mobile-12.wk-desk-5.wk-ipadp-10 {
+          margin-top: 60px;
+          margin-right: 0px;
+          margin-bottom: 0px;
+          margin-left: 0px;
+        }
+      
+        .contact_us_green .workik-contact-bigbox {
+          display: flex;
+        }
+      
+        .contact_us_green .responsive-cell-block.wk-tab-12.wk-mobile-12.wk-desk-5.wk-ipadp-10 {
+          padding-top: 0px;
+          padding-right: 0px;
+          padding-bottom: 0px;
+          padding-left: 0px;
+        }
+      }
+      
+      @media (max-width: 768px) {
+        .contact_us_green .text-content {
+          display: none;
+        }
+      
+        .contact_us_green .input {
+          width: 100%;
+        }
+      
+        .contact_us_green .textinput {
+          width: 100%;
+        }
+      
+        .contact_us_green .text-blk.contactus-head {
+          font-size: 30px;
+        }
+      }
+      
+      @media (max-width: 500px) {
+        .contact_us_green .responsive-container-block.big-container {
+          padding-top: 0px;
+          padding-right: 20px;
+          padding-bottom: 0px;
+          padding-left: 20px;
+        }
+      
+        .contact_us_green .workik-contact-bigbox {
+          display: block;
+        }
+      
+        .contact_us_green .text-blk.input-title {
+          font-size: 16px;
+        }
+      
+        .contact_us_green .text-blk.contactus-head {
+          font-size: 26px;
+        }
+      
+        .contact_us_green .text-blk.contactus-subhead {
+          font-size: 16px;
+          line-height: 23px;
+        }
+      
+        .contact_us_green .input {
+          height: 45px;
+        }
+      
+        .contact_us_green .responsive-cell-block.wk-ipadp-6.wk-tab-12.wk-mobile-12.wk-desk-6 {
+          margin: 0 0 25px 0;
+        }
+      }
+      
+      *,
+      *:before,
+      *:after {
+        -moz-box-sizing: border-box;
+        -webkit-box-sizing: border-box;
+        box-sizing: border-box;
+      }
+      
+      body {
+        margin: 0;
+      }
+      
+      .wk-desk-1 {
+        width: 8.333333%;
+      }
+      
+      .wk-desk-2 {
+        width: 16.666667%;
+      }
+      
+      .wk-desk-3 {
+        width: 25%;
+      }
+      
+      .wk-desk-4 {
+        width: 33.333333%;
+      }
+      
+      .wk-desk-5 {
+        width: 41.666667%;
+      }
+      
+      .wk-desk-6 {
+        width: 50%;
+      }
+      
+      .wk-desk-7 {
+        width: 58.333333%;
+      }
+      
+      .wk-desk-8 {
+        width: 66.666667%;
+      }
+      
+      .wk-desk-9 {
+        width: 75%;
+      }
+      
+      .wk-desk-10 {
+        width: 83.333333%;
+      }
+      
+      .wk-desk-11 {
+        width: 91.666667%;
+      }
+      
+      .wk-desk-12 {
+        width: 100%;
+      }
+      
+      @media (max-width: 1024px) {
+        .wk-ipadp-1 {
+          width: 8.333333%;
+        }
+      
+        .wk-ipadp-2 {
+          width: 16.666667%;
+        }
+      
+        .wk-ipadp-3 {
+          width: 25%;
+        }
+      
+        .wk-ipadp-4 {
+          width: 33.333333%;
+        }
+      
+        .wk-ipadp-5 {
+          width: 41.666667%;
+        }
+      
+        .wk-ipadp-6 {
+          width: 50%;
+        }
+      
+        .wk-ipadp-7 {
+          width: 58.333333%;
+        }
+      
+        .wk-ipadp-8 {
+          width: 66.666667%;
+        }
+      
+        .wk-ipadp-9 {
+          width: 75%;
+        }
+      
+        .wk-ipadp-10 {
+          width: 83.333333%;
+        }
+      
+        .wk-ipadp-11 {
+          width: 91.666667%;
+        }
+      
+        .wk-ipadp-12 {
+          width: 100%;
+        }
+      }
+      
+      @media (max-width: 768px) {
+        .wk-tab-1 {
+          width: 8.333333%;
+        }
+      
+        .wk-tab-2 {
+          width: 16.666667%;
+        }
+      
+        .wk-tab-3 {
+          width: 25%;
+        }
+      
+        .wk-tab-4 {
+          width: 33.333333%;
+        }
+      
+        .wk-tab-5 {
+          width: 41.666667%;
+        }
+      
+        .wk-tab-6 {
+          width: 50%;
+        }
+      
+        .wk-tab-7 {
+          width: 58.333333%;
+        }
+      
+        .wk-tab-8 {
+          width: 66.666667%;
+        }
+      
+        .wk-tab-9 {
+          width: 75%;
+        }
+      
+        .wk-tab-10 {
+          width: 83.333333%;
+        }
+      
+        .wk-tab-11 {
+          width: 91.666667%;
+        }
+      
+        .wk-tab-12 {
+          width: 100%;
+        }
+      }
+      
+      @media (max-width: 500px) {
+        .wk-mobile-1 {
+          width: 8.333333%;
+        }
+      
+        .wk-mobile-2 {
+          width: 16.666667%;
+        }
+      
+        .wk-mobile-3 {
+          width: 25%;
+        }
+      
+        .wk-mobile-4 {
+          width: 33.333333%;
+        }
+      
+        .wk-mobile-5 {
+          width: 41.666667%;
+        }
+      
+        .wk-mobile-6 {
+          width: 50%;
+        }
+      
+        .wk-mobile-7 {
+          width: 58.333333%;
+        }
+      
+        .wk-mobile-8 {
+          width: 66.666667%;
+        }
+      
+        .wk-mobile-9 {
+          width: 75%;
+        }
+      
+        .wk-mobile-10 {
+          width: 83.333333%;
+        }
+      
+        .wk-mobile-11 {
+          width: 91.666667%;
+        }
+      
+        .wk-mobile-12 {
+          width: 100%;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <div class="preloader">
+      <div class="spinner"></div>
+    </div>
+    <script>
+      document.addEventListener("DOMContentLoaded", () => {
+        const preloader = document.querySelector(".preloader");
+
+        preloader.style.display = "flex";
+        setTimeout(() => {
+          preloader.style.display = "none";
+        }, 500);
+      });
+    </script>
+    <nav>
+      <div class="logo">
+        <!-- <div class="image">
+                       <strong>cc</strong>
+                    </div> -->
+        <div class="text" id="#tile">
+          <strong>UVCE</strong>
+        </div>
+      </div>
+      <div class="nav-links">
+        <a href="#">Home</a>
+        <a href="#products">About</a>
+        <a href="#products">Academics</a>
+        <a href="{% url 'gallery' %}">Gallery</a>
+        <div class="dropdown">
+          <button class="dropbtn">Departments
+            <i class="fa fa-caret-down"></i>
+          </button>
+          <div class="dropdown-content">
+            <a href="#">CSE</a>
+            <a href="#">ISE</a>
+            <a href="#">AIML</a>
+            <a href="#">ECE</a>
+            <a href="#">EEE</a>
+            <a href="#">MECH</a>
+            <a href="#">Civil</a>
+          </div>
+        </div>
+        <a href="{% url 'calendar_view' %}">COE</a>
+        <div class="mode-toggle">
+            <input type="checkbox" id="mode-toggle">
+            <label for="mode-toggle"></label>
+          </div>
+        </div>
+       
+      </div>
+      <!-- <a href="login.html">
+                <div class="login"><strong>LOGIN</strong></div>
+            </a> -->
+      <div class="hamburger-menu">
+        <div class="bar"></div>
+        <div class="bar"></div>
+        <div class="bar"></div>
+      </div>
+      <script>
+        const hamburgerMenu = document.querySelector(".hamburger-menu");
+        const navLinks = document.querySelector(".nav-links");
+
+        hamburgerMenu.addEventListener("click", () => {
+          navLinks.classList.toggle("active");
+        });
+      </script>
+    </nav>
+
+    <section id="hero">
+        <div class="hero-content">
+          <h1>University of Visvesvaraya College of Engineering</h1>
+          <p> The First State Autonomous Engineering College.</p></p>
+          <a href="#about" class="btn">Learn More</a>
+        </div>
+      </section>
+      <section id="announcement">
+        <div class="announcement-content">
+          <p> Announcements</p>
+        </div>
+        <div class="marquee-container">
+          <marquee behavior="scroll" direction="left">
+            <span>Breaking News: Lorem ipsum dolor sit amet, consectetur adipiscing elit.</span> | 
+            <span>Another News: Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</span>
+          </marquee>
+        </div>
+      </section>
+      
+      <section id="about-us">
+        <div class="about-us-content">
+          <div class="about-us-text">
+            <h2>About Us</h2>
+            <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</p>
+          </div>
+          <div class="about-us-image"></div>
+        </div>
+      </section>
+
+
+      <section id="legacy">
+        <div class="heading">Our Legacy</div>
+        <div class="legacyContainer">
+          <div class="leg-content">
+            <div class="text">Since</div>
+            <div class="num">1917</div>
+          </div>
+          <div class="leg-content">
+            <div class="text">No. of Courses</div>
+            <div class="num">10</div>
+          </div>
+          <div class="leg-content">
+            <div class="text">No. of Students</div>
+            <div class="num">2000+</div>
+          </div>
+          <div class="leg-content">
+            <div class="text">No. of Courses</div>
+            <div class="num">10</div>
+          </div>
+          <!-- <div class="legacyContainer">
+            <div class="leg-content">
+              <div class="text">Since</div>
+              <div class="num">1917</div>
+            </div>
+            <div class="leg-content">
+              <div class="text">Since</div>
+              <div class="num">1917</div>
+            </div>
+            <div class="leg-content">
+              <div class="text">Since</div>
+              <div class="num">1917</div>
+            </div> -->
+        </div>
+      </section>
+      <script>
+        document.addEventListener("DOMContentLoaded", () => {
+            const modeToggle = document.getElementById('mode-toggle');
+            const body = document.body;
+          
+            const setMode = () => {
+              const mode = localStorage.getItem('mode');
+              if (mode === 'dark') {
+                body.classList.add('dark-mode');
+                modeToggle.checked = true;
+              } else {
+                body.classList.remove('dark-mode');
+                modeToggle.checked = false;
+              }
+            };
+        
+            setMode();
+          
+            modeToggle.addEventListener('change', () => {
+              if (modeToggle.checked) {
+                body.classList.add('dark-mode');
+                localStorage.setItem('mode', 'dark'); 
+              } else {
+                body.classList.remove('dark-mode');
+                localStorage.setItem('mode', 'dark'); 
+              }
+            });
+          });
+          
+        
+        </script>
+          <section class="map-section">
+            <h2>Reach Us</h2>
+            <div class="map-container">
+              <h3 class="map-heading">KR Circle</h3>
+              <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3887.9418827643694!2d77.58406837530183!3d12.97556901479076!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3bae1672fcfc6af1%3A0x9c2dc517c9231979!2sUVCE!5e0!3m2!1sen!2sin!4v1713701448488!5m2!1sen!2sin" width="400" height="300" style="border:0;" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
+            </div>
+            <div class="map-container">
+              <h3 class="map-heading">JB Campus</h3>
+              <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3888.4522156767157!2d77.49925438131596!3d12.9428894829615!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3bae3e928396042b%3A0x2ad22a3b537a1391!2sDepartment%20of%20Civil%20Engineering%2C%20University%20Visvesvaraya%20College%20Of%20Engineering.!5e0!3m2!1sen!2sin!4v1713700731002!5m2!1sen!2sin" width="400" height="300" style="border:0;" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
+            </div>
+          </section>
+            <div class="contact_us_green">
+              <div class="responsive-container-block big-container">
+                <div class="responsive-container-block container">
+                  <div class="responsive-cell-block wk-tab-12 wk-mobile-12 wk-desk-7 wk-ipadp-10 line" id="i69b-2">
+                    <form class="form-box">
+                      <div class="container-block form-wrapper">
+                        <div class="head-text-box">
+                          <p class="text-blk contactus-head">
+                            Contact us
+                          </p>
+                          <p class="text-blk contactus-subhead">
+                            Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna al iqua. Ut enim
+                          </p>
+                        </div>
+                        <div class="responsive-container-block">
+                          <div class="responsive-cell-block wk-ipadp-6 wk-tab-12 wk-mobile-12 wk-desk-6" id="i10mt-6">
+                            <p class="text-blk input-title">
+                              First Name
+                            </p>
+                            <input class="input" id="ijowk-6" name="FirstName">
+                          </div>
+                          <div class="responsive-cell-block wk-desk-6 wk-ipadp-6 wk-tab-12 wk-mobile-12">
+                            <p class="text-blk input-title">
+                              Last Name
+                            </p>
+                            <input class="input" id="indfi-4" name="Last Name">
+                          </div>
+                          <div class="responsive-cell-block wk-desk-6 wk-ipadp-6 wk-tab-12 wk-mobile-12">
+                            <p class="text-blk input-title">
+                              EMail ID
+                            </p>
+                            <input class="input" id="ipmgh-6" name="Email">
+                          </div>
+                          <div class="responsive-cell-block wk-desk-6 wk-ipadp-6 wk-tab-12 wk-mobile-12">
+                            <p class="text-blk input-title">
+                              Contact Number
+                            </p>
+                            <input class="input" id="imgis-5" name="PhoneNumber">
+                          </div>
+                          <div class="responsive-cell-block wk-tab-12 wk-mobile-12 wk-desk-12 wk-ipadp-12" id="i634i-6">
+                            <p class="text-blk input-title">
+                              What do you have in Mind?
+                            </p>
+                            <textarea class="textinput" id="i5vyy-6" placeholder="Please enter query..."></textarea>
+                          </div>
+                        </div>
+                        <div class="btn-wrapper">
+                          <button class="submit-btn">
+                            Submit
+                          </button>
+                        </div>
+                      </div>
+                    </form>
+                  </div>
+                  <div class="responsive-cell-block wk-tab-12 wk-mobile-12 wk-desk-5 wk-ipadp-10" id="ifgi">
+                    <div class="container-box">
+                      <div class="text-content">
+                        <p class="text-blk contactus-head">
+                          Contact us
+                        </p>
+                        <p class="text-blk contactus-subhead">
+                          Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna al iqua. Ut enim
+                        </p>
+                      </div>
+                      <div class="workik-contact-bigbox">
+                        <div class="workik-contact-box">
+                          <div class="phone text-box">
+                            <img class="contact-svg" src="https://workik-widget-assets.s3.amazonaws.com/widget-assets/images/ET21.jpg">
+                            <p class="contact-text">
+                              +080 0800800
+                            </p>
+                          </div>
+                          <div class="address text-box">
+                            <img class="contact-svg" src="https://workik-widget-assets.s3.amazonaws.com/widget-assets/images/ET22.jpg">
+                            <p class="contact-text">
+                              mail@uvce.ac.in
+                            </p>
+                          </div>
+                          <div class="mail text-box">
+                            <img class="contact-svg" src="https://workik-widget-assets.s3.amazonaws.com/widget-assets/images/ET23.jpg">
+                            <p class="contact-text">
+                             K R Circle, Bengaluru - 01.
+                            </p>
+                          </div>
+                        </div>
+                        <div class="social-media-links">
+                          <a href="">
+                            <img class="social-svg" id="is9ym" src="https://workik-widget-assets.s3.amazonaws.com/widget-assets/images/gray-mail.svg">
+                          </a>
+                          <a href="">
+                            <img class="social-svg" id="i706n" src="https://workik-widget-assets.s3.amazonaws.com/widget-assets/images/gray-twitter.svg">
+                          </a>
+                          <a href="">
+                            <img class="social-svg" id="ib9ve" src="https://workik-widget-assets.s3.amazonaws.com/widget-assets/images/gray-insta.svg">
+                          </a>
+                          <a href="">
+                            <img class="social-svg" id="ie9fx" src="https://workik-widget-assets.s3.amazonaws.com/widget-assets/images/gray-fb.svg">
+                          </a>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+  </body>
+</html>

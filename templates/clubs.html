@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Clubs</title>
+    <!-- Include Bootstrap CSS -->
+    <link
+      rel="stylesheet"
+      href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css"
+    />
+    <!-- Custom CSS for Clubs Page -->
+    <style>
+      .club-card {
+        margin-bottom: 20px;
+        border-radius: 10px;
+        overflow: hidden;
+      }
+      .club-card .card-img-overlay {
+        background-color: rgba(0, 0, 0, 0.5);
+        color: white;
+        transition: 0.3s ease-in-out;
+      }
+      .club-card:hover .card-img-overlay {
+        background-color: rgba(0, 0, 0, 0.8);
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container mt-5">
+      <div class="row">
+        {% for club in clubs %}
+        <div class="col-md-4">
+          <div class="card club-card">
+            <img
+              src="{{ club.image_url }}"
+              class="card-img"
+              alt="{{ club.name }}"
+            />
+            <div class="card-img-overlay">
+              <h5 class="card-title">{{ club.name }}</h5>
+              <p class="card-text">{{ club.details }}</p>
+              <a href="{{ club.link }}" class="btn btn-light">Know More</a>
+            </div>
+          </div>
+        </div>
+        {% endfor %}
+      </div>
+    </div>
+
+    <!-- Include Bootstrap JS and jQuery -->
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.1/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+  </body>
+</html>

@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Contribute</title>
+    <link
+      rel="stylesheet"
+      href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css"
+    />
+    <style>
+      /* Custom styles for Contribute form */
+      body {
+        background-color: #f8f9fa; /* Light background color */
+        padding: 20px;
+      }
+      h1 {
+        text-align: center;
+        color: #333; /* Dark text color */
+        margin-bottom: 20px;
+      }
+      form {
+        max-width: 600px; /* Limit form width for better readability */
+        margin: auto; /* Center form horizontally */
+        background-color: #fff; /* White background for form */
+        padding: 20px;
+        border-radius: 5px;
+        box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1); /* Shadow for form */
+      }
+      label {
+        font-weight: bold;
+        color: #555; /* Medium-dark text color */
+      }
+      .form-control {
+        margin-bottom: 15px;
+        border-color: #ccc; /* Light border color */
+      }
+      button[type="submit"] {
+        background-color: #007bff; /* Primary button color */
+        border-color: #007bff;
+        color: #fff; /* Button text color */
+      }
+      button[type="submit"]:hover {
+        background-color: #0056b3; /* Darker hover color */
+        border-color: #0056b3;
+      }
+    </style>
+  </head>
+  <body>
+    <h1>Contribute Form</h1>
+    <form method="POST" action="{% url 'contribute' %}">
+      {% csrf_token %}
+      <div class="form-group">
+        <label for="id_name">Name:</label>
+        <input
+          type="text"
+          id="id_name"
+          name="name"
+          class="form-control"
+          placeholder="Enter your name"
+          required
+        />
+      </div>
+      <div class="form-group">
+        <label for="id_email">Email:</label>
+        <input
+          type="email"
+          id="id_email"
+          name="email"
+          class="form-control"
+          placeholder="Enter your email"
+          required
+        />
+      </div>
+      <div class="form-group">
+        <label for="id_phone">Phone:</label>
+        <input
+          type="text"
+          id="id_phone"
+          name="phone"
+          class="form-control"
+          placeholder="Enter your phone"
+          required
+        />
+      </div>
+      <div class="form-group">
+        <label for="id_contribution_type">Contribution Type:</label>
+        <input
+          type="text"
+          id="id_contribution_type"
+          name="contribution_type"
+          class="form-control"
+          placeholder="Enter contribution type"
+          required
+        />
+      </div>
+      <div class="form-group">
+        <label for="id_contribution_description"
+          >Contribution Description:</label
+        >
+        <textarea
+          id="id_contribution_description"
+          name="contribution_description"
+          class="form-control"
+          rows="5"
+          placeholder="Enter contribution description"
+          required
+        ></textarea>
+      </div>
+      <div class="form-group">
+        <label for="id_contact_preference">Contact Preference:</label>
+        <select
+          id="id_contact_preference"
+          name="contact_preference"
+          class="form-control"
+          required
+        >
+          <option value="">Choose...</option>
+          <option value="Email">Email</option>
+          <option value="Phone">Phone</option>
+        </select>
+      </div>
+      <button type="submit" class="btn btn-primary">Submit</button>
+    </form>
+  </body>
+</html>

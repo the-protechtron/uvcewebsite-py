@@ -1,0 +1,263 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Carousel Example</title>
+    <!-- Include Bootstrap CSS -->
+    <link
+      rel="stylesheet"
+      href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css"
+    />
+    <!-- Custom CSS for Carousels -->
+    <style>
+      .carousel-item {
+        text-align: center;
+        padding: 20px;
+        /*background-color: #f8f9fa;  Light gray background */
+        border-radius: 10px;
+        box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+        margin-bottom: 20px;
+      }
+      .carousel-item h3 {
+        font-size: 24px;
+        color: #333;
+        margin-bottom: 10px;
+      }
+      .carousel-item p {
+        font-size: 16px;
+        color: #555;
+      }
+      .carousel-control-prev,
+      .carousel-control-next {
+        color: #333; /* Dark gray color for carousel controls */
+      }
+      .carousel-control-prev:hover,
+      .carousel-control-next:hover {
+        color: #000; /* Black color on hover for carousel controls */
+      }
+      /* Custom styling for carousel indicators */
+      .carousel-indicators {
+        bottom: 0px; /* Adjust downward position */
+      }
+      .carousel-indicators li {
+        background-color: rgba(
+          0,
+          0,
+          0,
+          0.5
+        ); /* Semi-transparent background for indicators */
+        border-radius: 50%;
+        width: 10px;
+        height: 10px;
+        margin-right: 5px;
+        cursor: pointer;
+      }
+      .carousel-indicators .active {
+        background-color: #000; /* Black color for active indicator */
+      }
+      .carousel-card {
+        max-width: 800px; /* Set max width for cards */
+        margin: 0 auto; /* Center align cards */
+      }
+      h1 {
+        text-align: center;
+      }
+    </style>
+  </head>
+  <body>
+    <h1>Announcements</h1>
+    <!-- Announcements Carousel -->
+    <div
+      id="announcementsCarousel"
+      class="carousel slide"
+      data-ride="carousel"
+      data-interval="6000"
+    >
+      <div class="carousel-inner">
+        {% for announcement in announcements %}
+        <div class="carousel-item {% if forloop.first %}active{% endif %}">
+          <div class="carousel-card">
+            <h3>{{ announcement.title }}</h3>
+            <p>{{ announcement.content }}</p>
+          </div>
+        </div>
+        {% endfor %}
+      </div>
+      <ol class="carousel-indicators">
+        {% for announcement in announcements %}
+        <li
+          data-target="#announcementsCarousel"
+          data-slide-to="{{ forloop.counter0 }}"
+          {%
+          if
+          forloop.first
+          %}class="active"
+          {%
+          endif
+          %}
+        ></li>
+        {% endfor %}
+      </ol>
+      <a
+        class="carousel-control-prev"
+        href="#announcementsCarousel"
+        role="button"
+        data-slide="prev"
+      >
+        <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+        <span class="sr-only">Previous</span>
+      </a>
+      <a
+        class="carousel-control-next"
+        href="#announcementsCarousel"
+        role="button"
+        data-slide="next"
+      >
+        <span class="carousel-control-next-icon" aria-hidden="true"></span>
+        <span class="sr-only">Next</span>
+      </a>
+    </div>
+
+    {% comment %} <!-- Circulars Carousel -->
+    <h1>Circulars</h1>
+    <div
+      id="circularsCarousel"
+      class="carousel slide"
+      data-ride="carousel"
+      data-interval="7000"
+    >
+      <div class="carousel-inner">
+        {% for circular in circulars %}
+        <div class="carousel-item {% if forloop.first %}active{% endif %}">
+          <div class="carousel-card">
+            <h3>{{ circular.title }}</h3>
+            <p>{{ circular.content }}</p>
+          </div>
+        </div>
+        {% endfor %}
+      </div>
+      <ol class="carousel-indicators">
+        {% for circular in circulars %}
+        <li
+          data-target="#circularsCarousel"
+          data-slide-to="{{ forloop.counter0 }}"
+          {%
+          if
+          forloop.first
+          %}class="active"
+          {%
+          endif
+          %}
+        ></li>
+        {% endfor %}
+      </ol>
+      <a
+        class="carousel-control-prev"
+        href="#circularsCarousel"
+        role="button"
+        data-slide="prev"
+      >
+        <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+        <span class="sr-only">Previous</span>
+      </a>
+      <a
+        class="carousel-control-next"
+        href="#circularsCarousel"
+        role="button"
+        data-slide="next"
+      >
+        <span class="carousel-control-next-icon" aria-hidden="true"></span>
+        <span class="sr-only">Next</span>
+      </a>
+    </div>
+
+    <!-- Broadcasts Carousel -->
+    <h1>Broadcasts</h1>
+    <div
+      id="broadcastsCarousel"
+      class="carousel slide"
+      data-ride="carousel"
+      data-interval="8000"
+    >
+      <div class="carousel-inner">
+        {% for broadcast in broadcasts %}
+        <div class="carousel-item {% if forloop.first %}active{% endif %}">
+          <div class="carousel-card">
+            <h3>{{ broadcast.title }}</h3>
+            <p>{{ broadcast.content }}</p>
+          </div>
+        </div>
+        {% endfor %}
+      </div>
+      <ol class="carousel-indicators">
+        {% for broadcast in broadcasts %}
+        <li
+          data-target="#broadcastsCarousel"
+          data-slide-to="{{ forloop.counter0 }}"
+          {%
+          if
+          forloop.first
+          %}class="active"
+          {%
+          endif
+          %}
+        ></li>
+        {% endfor %}
+      </ol>
+      <a
+        class="carousel-control-prev"
+        href="#broadcastsCarousel"
+        role="button"
+        data-slide="prev"
+      >
+        <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+        <span class="sr-only">Previous</span>
+      </a>
+      <a
+        class="carousel-control-next"
+        href="#broadcastsCarousel"
+        role="button"
+        data-slide="next"
+      >
+        <span class="carousel-control-next-icon" aria-hidden="true"></span>
+        <span class="sr-only">Next</span>
+      </a>
+    </div> {% endcomment %}
+
+    <!-- Include Bootstrap JS and jQuery -->
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.1/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+    <!-- Initialize Bootstrap Carousels with Touch Swipe and Synchronized Scrolling -->
+    <script>
+      $(document).ready(function () {
+        // Initialize carousels
+        $(".carousel").carousel({
+          //interval: 6000, // Set interval to 6 seconds
+          touch: true, // Enable touch/swipe feature for manual sliding
+        });
+        /*
+        // Synchronized scrolling
+        $(".carousel").on("slide.bs.carousel", function (e) {
+          var $e = $(e.relatedTarget);
+          var direction = e.direction;
+
+          if ($(this).attr("id") == "announcementsCarousel") {
+            if (direction == "left") {
+              $("#circularsCarousel").carousel("prev");
+            } else {
+              $("#circularsCarousel").carousel("next");
+            }
+          } else if ($(this).attr("id") == "circularsCarousel") {
+            if (direction == "left") {
+              $("#broadcastsCarousel").carousel("");
+            } else {
+              $("#broadcastsCarousel").carousel("prev");
+            }
+          }
+        });*/
+      });
+    </script>
+  </body>
+</html>
